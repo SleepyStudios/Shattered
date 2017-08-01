@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Main-Class: net.sleepystudios.ld39server.LD39Server
+
