@@ -115,7 +115,7 @@ public class Player {
                 LD39.playSound("chargeup.mp3");
             }
 
-            if(inControlPoint()!=-1 && energy<60) {
+            if(inControlPoint()==1 && energy<60) {
                 sparks.active = true;
                 if(game.me==id) {
                     siphonEnergy();
@@ -267,9 +267,8 @@ public class Player {
         // bases
         for(Base b : game.base) {
             if(b.texInited) {
-//                if(intersectsBottom(b.boxToPoly(b.box[0]))) {
-//                    return b.team;
-//                }
+                if(intersectsBottom(b.boxToPoly(b.box))) return b.team;
+                if(b.collides(boxToPoly()) || b.collides(headBoxToPoly())) return 2;
             }
         }
 
@@ -279,10 +278,8 @@ public class Player {
     private int inControlPoint() {
         for(ControlPoint c : game.controls) {
             if(c.texInited) {
-//                if(intersectsBottom(c.boxToPoly(c.box[0]))) {
-//                    return 1;
-//                }
-
+                if(intersectsBottom(c.boxToPoly(c.box))) return 1;
+                if(c.collides(boxToPoly()) || c.collides(headBoxToPoly())) return 2;
             }
         }
 
@@ -300,22 +297,14 @@ public class Player {
         // bases
         for(Base b : game.base) {
             if(b.texInited) {
-//                for(Rectangle r : b.box) {
-//                    if(intersectsBottom(b.boxToPoly(r))) {
-//                        return true;
-//                    }
-//                }
+                if(b.collides(boxToPoly()) || intersects(b.boxToPoly((b.box)))) return true;
             }
         }
 
         // control points
         for(ControlPoint c : game.controls) {
             if (c.texInited) {
-//                for (Rectangle r : c.box) {
-//                    if (intersectsBottom(c.boxToPoly(r))) {
-//                        return true;
-//                    }
-//                }
+                if(c.collides(boxToPoly()) || intersects(c.boxToPoly((c.box)))) return true;
             }
         }
 
@@ -353,24 +342,20 @@ public class Player {
                 // bases
                 for(Base b : game.base) {
                     if(b.texInited) {
-//                        for(Rectangle r : b.box) {
-//                            if(intersectsBoth(b.boxToPoly(r))) {
-//                                collideWithThing();
-//                                return true;
-//                            }
-//                        }
+                        if(b.collides(boxToPoly()) || b.collides(headBoxToPoly())) {
+                            collideWithThing();
+                            return true;
+                        }
                     }
                 }
 
                 // control points
                 for(ControlPoint c : game.controls) {
                     if (c.texInited) {
-//                        for (Rectangle r : c.box) {
-//                            if (intersectsBoth(c.boxToPoly(r))) {
-//                                collideWithThing();
-//                                return true;
-//                            }
-//                        }
+                        if(c.collides(boxToPoly()) || c.collides(headBoxToPoly())) {
+                            collideWithThing();
+                            return true;
+                        }
                     }
                 }
             }

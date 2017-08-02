@@ -250,7 +250,7 @@ public class LD39 extends ApplicationAdapter implements InputProcessor {
 			tmrRespawn = 0;
 		}
 
-		if(getMe()!=null && getMe().texInited) {
+		if(getMe()!=null && getMe().texInited && !newMatch) {
 			tmrMessages+=delta;
 			int msgDelay = 3;
 			if(tmrMessages>=msgDelay) {

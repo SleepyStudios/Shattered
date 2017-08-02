@@ -23,7 +23,7 @@ public class Base {
     int energy, team;
 
     Sprite sprite, overlay, pointer;
-    //Rectangle[] box = new Rectangle[5];
+    Rectangle box;
 
     public Base(LD39 game, float x, float y, int team) {
         this.game = game;
@@ -47,20 +47,22 @@ public class Base {
         texInited = true;
     }
 
+    ArrayList<Vector2> vecs;
     public void initBoxes() {
-//        box[0] = new Rectangle(x+25, y, 50, 40);
-//
-//        box[1] = new Rectangle(x, y, 20, 100);
-//        box[2] = new Rectangle(x+sprite.getWidth()-box[1].getWidth(), box[1].getY(), box[1].getWidth(), 100);
-//
-//        box[3] = new Rectangle(x, y+33, 30, 20);
-//        box[4] = new Rectangle(x+sprite.getWidth()-box[3].getWidth(), box[3].getY(), box[3].getWidth(), 20);
+        box = new Rectangle(x, y+25, 100, 20);
 
+        float bx = x+10;
+        float by = y+10;
         float bw = 80;
-        float bh = 50;
+        float bh = 90;
 
-        Bezier<Vector2> bezier = new Bezier<Vector2>(new Vector2(x+bw, y+bh), new Vector2(x+bw, y), new Vector2(x, y), new Vector2(x, y+bh));
-        ArrayList<Vector2> vecs = new ArrayList<Vector2>();
+        Bezier<Vector2> bezier = new Bezier<Vector2>(
+                new Vector2(bx+bw, by+bh),
+                new Vector2(bx+bw, by),
+                new Vector2(bx, by),
+                new Vector2(bx, by+bh));
+
+        vecs = new ArrayList<Vector2>();
         for(int i=0; i<100; i++) {
             float t = i/100f;
 
@@ -70,7 +72,7 @@ public class Base {
         }
     }
 
-    public boolean collides(ArrayList<Vector2> vecs, Polygon p) {
+    public boolean collides(Polygon p) {
         for(int i=0; i<vecs.size(); i++) {
             if(p.contains(vecs.get(i))) return true;
         }
@@ -90,13 +92,37 @@ public class Base {
     public void renderOverlay(SpriteBatch batch) {
         overlay.draw(batch);
 
-        if(game.showHitboxes) {
-//            for(Rectangle r : box) {
-//                game.renderHitbox(boxToPoly(r).getTransformedVertices(), r==box[0] ? Color.RED : Color.PURPLE);
-//            }
-        }
+        renderHitboxes(batch);
 
         renderHP(batch);
+    }
+
+    public void renderHitboxes(SpriteBatch batch) {
+        batch.end();
+
+        if(game.showHitboxes) {
+            float[] floats = new float[vecs.size()*2];
+            int i = 0;
+            while(i<floats.length) {
+                for(int j=0; j<vecs.size(); j++) {
+                    floats[i] = vecs.get(j).x;
+                    floats[i+1] = vecs.get(j).y;
+                    i+=2;
+                }
+            }
+
+            game.sr.begin(ShapeRenderer.ShapeType.Line);
+            game.sr.setProjectionMatrix(game.cam.combined);
+            game.sr.setColor(Color.PURPLE);
+            game.sr.polyline(floats);
+
+            game.sr.setColor(Color.RED);
+            game.sr.rect(box.x, box.y, box.width, box.height);
+
+            game.sr.end();
+        }
+
+        batch.begin();
     }
 
     public void renderPointer(SpriteBatch batch) {

@@ -23,10 +23,6 @@ public class ControlPoint extends Base {
     public void renderOverlay(SpriteBatch batch) {
         overlay.draw(batch);
 
-        if(game.showHitboxes) {
-            for(Rectangle r : box) {
-                game.renderHitbox(boxToPoly(r).getTransformedVertices(), Color.LIME);
-            }
-        }
+        renderHitboxes(batch);
     }
 }

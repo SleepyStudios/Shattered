@@ -36,7 +36,7 @@ public class Player {
     }
 
     public float setX() {
-        return team == 0 ? LD39Server.rand(100, MAP_W/2-MAP_W/4-100) : LD39Server.rand(MAP_W/2+MAP_W/4+100, MAP_W-100);
+        return team == 0 ? LD39Server.rand(200, MAP_W/2-MAP_W/4-100) : LD39Server.rand(MAP_W/2+MAP_W/4+100, MAP_W-200);
     }
 
     public void respawn() {
