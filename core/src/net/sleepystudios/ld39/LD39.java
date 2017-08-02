@@ -119,7 +119,7 @@ public class LD39 extends ApplicationAdapter implements InputProcessor {
 		Music m = Gdx.audio.newMusic(Gdx.files.internal("lighting the way.mp3"));
 		m.setVolume(1f);
 		m.setLooping(true);
-		//m.play();
+		m.play();
 
 		Gdx.input.setInputProcessor(this);
 	}
