@@ -7,8 +7,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Bezier;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+
+import java.util.ArrayList;
 
 /**
  * Created by tudor on 31/07/2017.
@@ -19,7 +23,7 @@ public class Base {
     int energy, team;
 
     Sprite sprite, overlay, pointer;
-    Rectangle[] box = new Rectangle[5];
+    //Rectangle[] box = new Rectangle[5];
 
     public Base(LD39 game, float x, float y, int team) {
         this.game = game;
@@ -44,13 +48,33 @@ public class Base {
     }
 
     public void initBoxes() {
-        box[0] = new Rectangle(x+25, y, 50, 40);
+//        box[0] = new Rectangle(x+25, y, 50, 40);
+//
+//        box[1] = new Rectangle(x, y, 20, 100);
+//        box[2] = new Rectangle(x+sprite.getWidth()-box[1].getWidth(), box[1].getY(), box[1].getWidth(), 100);
+//
+//        box[3] = new Rectangle(x, y+33, 30, 20);
+//        box[4] = new Rectangle(x+sprite.getWidth()-box[3].getWidth(), box[3].getY(), box[3].getWidth(), 20);
 
-        box[1] = new Rectangle(x, y, 20, 100);
-        box[2] = new Rectangle(x+sprite.getWidth()-box[1].getWidth(), box[1].getY(), box[1].getWidth(), 100);
+        float bw = 80;
+        float bh = 50;
 
-        box[3] = new Rectangle(x, y+33, 30, 20);
-        box[4] = new Rectangle(x+sprite.getWidth()-box[3].getWidth(), box[3].getY(), box[3].getWidth(), 20);
+        Bezier<Vector2> bezier = new Bezier<Vector2>(new Vector2(x+bw, y+bh), new Vector2(x+bw, y), new Vector2(x, y), new Vector2(x, y+bh));
+        ArrayList<Vector2> vecs = new ArrayList<Vector2>();
+        for(int i=0; i<100; i++) {
+            float t = i/100f;
+
+            Vector2 st = new Vector2();
+            st = bezier.valueAt(st, t);
+            vecs.add(st);
+        }
+    }
+
+    public boolean collides(ArrayList<Vector2> vecs, Polygon p) {
+        for(int i=0; i<vecs.size(); i++) {
+            if(p.contains(vecs.get(i))) return true;
+        }
+        return false;
     }
 
     public void render(SpriteBatch batch) {
@@ -67,9 +91,9 @@ public class Base {
         overlay.draw(batch);
 
         if(game.showHitboxes) {
-            for(Rectangle r : box) {
-                game.renderHitbox(boxToPoly(r).getTransformedVertices(), r==box[0] ? Color.RED : Color.PURPLE);
-            }
+//            for(Rectangle r : box) {
+//                game.renderHitbox(boxToPoly(r).getTransformedVertices(), r==box[0] ? Color.RED : Color.PURPLE);
+//            }
         }
 
         renderHP(batch);

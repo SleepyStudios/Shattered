@@ -267,9 +267,9 @@ public class Player {
         // bases
         for(Base b : game.base) {
             if(b.texInited) {
-                if(intersectsBottom(b.boxToPoly(b.box[0]))) {
-                    return b.team;
-                }
+//                if(intersectsBottom(b.boxToPoly(b.box[0]))) {
+//                    return b.team;
+//                }
             }
         }
 
@@ -279,9 +279,10 @@ public class Player {
     private int inControlPoint() {
         for(ControlPoint c : game.controls) {
             if(c.texInited) {
-                if(intersectsBottom(c.boxToPoly(c.box[0]))) {
-                    return 1;
-                }
+//                if(intersectsBottom(c.boxToPoly(c.box[0]))) {
+//                    return 1;
+//                }
+
             }
         }
 
@@ -299,22 +300,22 @@ public class Player {
         // bases
         for(Base b : game.base) {
             if(b.texInited) {
-                for(Rectangle r : b.box) {
-                    if(intersectsBottom(b.boxToPoly(r))) {
-                        return true;
-                    }
-                }
+//                for(Rectangle r : b.box) {
+//                    if(intersectsBottom(b.boxToPoly(r))) {
+//                        return true;
+//                    }
+//                }
             }
         }
 
         // control points
         for(ControlPoint c : game.controls) {
             if (c.texInited) {
-                for (Rectangle r : c.box) {
-                    if (intersectsBottom(c.boxToPoly(r))) {
-                        return true;
-                    }
-                }
+//                for (Rectangle r : c.box) {
+//                    if (intersectsBottom(c.boxToPoly(r))) {
+//                        return true;
+//                    }
+//                }
             }
         }
 
@@ -352,24 +353,24 @@ public class Player {
                 // bases
                 for(Base b : game.base) {
                     if(b.texInited) {
-                        for(Rectangle r : b.box) {
-                            if(intersectsBoth(b.boxToPoly(r))) {
-                                collideWithThing();
-                                return true;
-                            }
-                        }
+//                        for(Rectangle r : b.box) {
+//                            if(intersectsBoth(b.boxToPoly(r))) {
+//                                collideWithThing();
+//                                return true;
+//                            }
+//                        }
                     }
                 }
 
                 // control points
                 for(ControlPoint c : game.controls) {
                     if (c.texInited) {
-                        for (Rectangle r : c.box) {
-                            if (intersectsBoth(c.boxToPoly(r))) {
-                                collideWithThing();
-                                return true;
-                            }
-                        }
+//                        for (Rectangle r : c.box) {
+//                            if (intersectsBoth(c.boxToPoly(r))) {
+//                                collideWithThing();
+//                                return true;
+//                            }
+//                        }
                     }
                 }
             }
