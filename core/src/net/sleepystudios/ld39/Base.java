@@ -92,15 +92,15 @@ public class Base {
     public void renderOverlay(SpriteBatch batch) {
         overlay.draw(batch);
 
-        renderHitboxes(batch);
+        renderHitBoxes(batch);
 
         renderHP(batch);
     }
 
-    public void renderHitboxes(SpriteBatch batch) {
+    public void renderHitBoxes(SpriteBatch batch) {
         batch.end();
 
-        if(game.showHitboxes) {
+        if(game.showHitBoxes) {
             float[] floats = new float[vecs.size()*2];
             int i = 0;
             while(i<floats.length) {

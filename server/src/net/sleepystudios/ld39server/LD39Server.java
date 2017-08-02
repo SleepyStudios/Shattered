@@ -1,5 +1,8 @@
 package net.sleepystudios.ld39server;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -11,7 +14,7 @@ public class LD39Server {
     ArrayList<Player> players = new ArrayList<>();
     Base base[] = new Base[2];
 
-    final int MAX_ENERGY = 60;
+    final int MAX_ENERGY = 60, MAX_BASE_ENERGY = 100, MAP_W = 2000;
 
     public LD39Server() {
         n = new Network(this);
@@ -83,7 +86,7 @@ public class LD39Server {
                         n.server.sendToAllTCP(nm);
                         newMatch = true;
 
-                        System.out.println("Team " + nm.winner + " won!");
+                        System.out.println(getTimestamp() + "Team " + nm.winner + " won!");
                     }
 
                     Packets.BaseUpdate bu = new Packets.BaseUpdate();
@@ -141,6 +144,11 @@ public class LD39Server {
     public static float randNoZero(float min, float max) {
         float r = rand(min, max);
         return r != 0 ? r : randNoZero(min, max);
+    }
+
+    public String getTimestamp() {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        return "[" + localDateTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)) + "] ";
     }
 
     public static void main(String[] args) {

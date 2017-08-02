@@ -20,8 +20,7 @@ public class Network {
         try {
             client.connect(5000, ip, tcp, udp);
         } catch (IOException e) {
-            e.printStackTrace();
-            //System.out.println("Couldn't connect");
+            System.out.println("Couldn't connect");
         }
     }
 

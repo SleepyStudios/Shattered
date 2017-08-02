@@ -31,11 +31,9 @@ public class Player {
     final int GROUNDED = 0;
     final int JUMPING = 1;
     final int FALLING = 2;
-    final int THRUSTING = 3;
     int state = GROUNDED;
 
     Vector2 vel = new Vector2();
-    Vector2 thrust = new Vector2();
     final float JUMP_VELOCITY = 10f;
     final float UPTHRUST = 0.15f;
     final float GRAVITY = 0.5f;
@@ -43,7 +41,6 @@ public class Player {
     final float MAX_VEL_X = 10f;
     final float MAX_VEL_Y = 1f;
     final float ROT_SPEED = 8f;
-    final float THRUST_SPEED = 30f;
 
     Rectangle box, headBox;
 
@@ -82,9 +79,9 @@ public class Player {
 
         bulb.draw(batch);
 
-        if(game.showHitboxes) {
-            game.renderHitbox(boxToPoly().getTransformedVertices(), Color.RED);
-            game.renderHitbox(headBoxToPoly().getTransformedVertices(), Color.YELLOW);
+        if(game.showHitBoxes) {
+            game.renderHitBox(boxToPoly().getTransformedVertices(), Color.RED);
+            game.renderHitBox(headBoxToPoly().getTransformedVertices(), Color.YELLOW);
         }
 
         update();
@@ -153,8 +150,6 @@ public class Player {
                 if(state==GROUNDED) {
                     state = JUMPING;
                     vel.y = MAX_VEL_Y;
-                //} else {
-                //    thrust();
                 }
             }
 
@@ -182,33 +177,8 @@ public class Player {
                 }
             }
 
-            if(state!=THRUSTING) {
-                move(x+vel.x, y+vel.y);
-            } else {
-                move(x + thrust.x, y + thrust.y);
-
-                float factor = 0.01f;
-                if(thrust.y>0) factor = 0.1f;
-                thrust.y+=(0-thrust.y)*factor;
-
-                if((int) thrust.y==0) {
-                    vel.x = thrust.x;
-                    thrust.set(0, 0);
-                    state = FALLING;
-                }
-            }
+            move(x+vel.x, y+vel.y);
         }
-    }
-
-    public void thrust() {
-        if(state==GROUNDED || state==FALLING || state==THRUSTING) return;
-
-        state = THRUSTING;
-        thrust.x = MathUtils.sin(MathUtils.degRad * bulb.getRotation()) * THRUST_SPEED;
-        thrust.y = -MathUtils.cos(MathUtils.degRad * bulb.getRotation()) * THRUST_SPEED;
-
-        thrust.x = MathUtils.clamp(thrust.x, -THRUST_SPEED, THRUST_SPEED);
-        thrust.y = MathUtils.clamp(thrust.y, -THRUST_SPEED, 5);
     }
 
     public void updateCam() {
@@ -288,9 +258,7 @@ public class Player {
 
     private boolean isBlockedX() {
         if((x+vel.x <= 0 || x+vel.x >= game.MAP_W - bulb.getWidth()) && state==GROUNDED) {
-            thrust.x = 0;
             vel.x = 0;
-
             return true;
         }
 
@@ -315,15 +283,11 @@ public class Player {
         if(y+vel.y <= 0) {
             vel.y = 0;
             state = GROUNDED;
-
             return true;
         }
 
         if((x+vel.x <= 0 || x+vel.x >= game.MAP_W - bulb.getWidth()) && state!=GROUNDED) {
-            thrust.x = 0;
             vel.x = 0;
-            if(state==THRUSTING) state = FALLING;
-
             return true;
         }
 
@@ -397,27 +361,18 @@ public class Player {
     }
 
     public void collideWithThing() {
-        if(state!=GROUNDED) {
-            vel.x = 0;
-            thrust.x = 0;
-        }
+        if(state!=GROUNDED) vel.x = 0;
 
         vel.y = MathUtils.clamp(vel.y-0.1f, 0, vel.y);
-        thrust.y = MathUtils.clamp(thrust.y-0.1f, 0, thrust.y);
-
         state = GROUNDED;
     }
 
     public boolean intersects(Polygon poly) {
-        return Intersector.overlapConvexPolygons(poly, headBoxToPoly()) /*|| Intersector.overlapConvexPolygons(poly, boxToPoly())*/;
+        return Intersector.overlapConvexPolygons(poly, headBoxToPoly());
     }
 
     public boolean intersectsBottom(Polygon poly) {
-        return Intersector.overlapConvexPolygons(poly, boxToPoly()) /*|| Intersector.overlapConvexPolygons(poly, boxToPoly())*/;
-    }
-
-    public boolean intersectsBoth(Polygon poly) {
-        return Intersector.overlapConvexPolygons(poly, headBoxToPoly()) || Intersector.overlapConvexPolygons(poly, boxToPoly());
+        return Intersector.overlapConvexPolygons(poly, boxToPoly());
     }
 
     public void positionLight() {
@@ -457,7 +412,6 @@ public class Player {
         dead = true;
         state = GROUNDED;
         vel.set(0,0);
-        thrust.set(0,0);
         game.explosions.add(new Explosion(boxToPoly().getOriginX(), boxToPoly().getOriginY()));
     }
 

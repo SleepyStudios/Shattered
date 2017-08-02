@@ -59,9 +59,7 @@ public class Sparks {
 
             s.draw(batch);
 
-            if(alpha<=0.1f) {
-                exists = false;
-            }
+            if(alpha<=0.1f) exists = false;
         }
     }
 }

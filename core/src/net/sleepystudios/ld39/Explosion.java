@@ -33,9 +33,7 @@ public class Explosion {
             bits.add(new Bit(x, y));
             totParticles++;
 
-            if(totParticles>=maxParticles) {
-                active = false;
-            }
+            if(totParticles>=maxParticles) active = false;
         }
     }
 
@@ -78,9 +76,7 @@ public class Explosion {
 
             s.draw(batch);
 
-            if(alpha<=0.1f) {
-                exists = false;
-            }
+            if(alpha<=0.1f) exists = false;
         }
     }
 }

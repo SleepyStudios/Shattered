@@ -7,12 +7,12 @@ public class Player {
     LD39Server game;
 
     int id, team, energy;
-    int MAP_W = 2000;
     float x, y, angle;
 
     boolean dead;
 
-    float tmrRespawn; int respawnTime=3;
+    float tmrRespawn;
+    int respawnTime = 3;
 
     public Player(LD39Server game, int id, int team) {
         this.game = game;
@@ -36,7 +36,7 @@ public class Player {
     }
 
     public float setX() {
-        return team == 0 ? LD39Server.rand(200, MAP_W/2-MAP_W/4-100) : LD39Server.rand(MAP_W/2+MAP_W/4+100, MAP_W-200);
+        return team == 0 ? LD39Server.rand(200, game.MAP_W/2-game.MAP_W/4-100) : LD39Server.rand(game.MAP_W/2+game.MAP_W/4+100, game.MAP_W-200);
     }
 
     public void respawn() {

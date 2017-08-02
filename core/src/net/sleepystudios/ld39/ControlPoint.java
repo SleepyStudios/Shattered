@@ -1,8 +1,6 @@
 package net.sleepystudios.ld39;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
 
 /**
  * Created by tudor on 31/07/2017.
@@ -23,6 +21,6 @@ public class ControlPoint extends Base {
     public void renderOverlay(SpriteBatch batch) {
         overlay.draw(batch);
 
-        renderHitboxes(batch);
+        renderHitBoxes(batch);
     }
 }

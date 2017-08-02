@@ -9,7 +9,6 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -34,18 +33,13 @@ public class LD39 extends ApplicationAdapter implements InputProcessor {
 	int me = -1;
 
 	ShapeRenderer sr;
-	Texture background;
-
-	boolean showHitboxes;
-
-	ArrayList<Platform> platforms = new ArrayList<Platform>();
-	Base[] base = new Base[2];
-	ArrayList<ControlPoint> controls = new ArrayList<ControlPoint>();
+	boolean showHitBoxes;
 
 	final int MAP_W = 2000;
-
+	Base[] base = new Base[2];
+	ArrayList<Platform> platforms = new ArrayList<Platform>();
+	ArrayList<ControlPoint> controls = new ArrayList<ControlPoint>();
 	ArrayList<Explosion> explosions = new ArrayList<Explosion>();
-
 	ArrayList<ActionMessage> actionMessages = new ArrayList<ActionMessage>();
 
 	boolean newMatch;
@@ -102,12 +96,10 @@ public class LD39 extends ApplicationAdapter implements InputProcessor {
 			e.printStackTrace();
 		}
 
-		n = new Network(this, ip, tcp, udp); //13.58.212.75
+		n = new Network(this, ip, tcp, udp);
 		cam = new OrthographicCamera(Gdx.graphics.getWidth() , Gdx.graphics.getHeight());
 		font = new BitmapFont();
 		sr = new ShapeRenderer();
-		background = new Texture("background.png");
-		background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
 
 		initFont();
 
@@ -127,7 +119,7 @@ public class LD39 extends ApplicationAdapter implements InputProcessor {
 		Music m = Gdx.audio.newMusic(Gdx.files.internal("lighting the way.mp3"));
 		m.setVolume(1f);
 		m.setLooping(true);
-		m.play();
+		//m.play();
 
 		Gdx.input.setInputProcessor(this);
 	}
@@ -157,7 +149,7 @@ public class LD39 extends ApplicationAdapter implements InputProcessor {
 			batch.begin();
 			font.setColor(Color.WHITE);
 
-			String text = "Couldn't connect\ncheck twttier.com/waker_bot\nfor server status\n\nPress Space to try again";
+			String text = "Couldn't connect\ncheck twitter.com/waker_bot\nfor server status\n\nPress Space to try again";
 			GlyphLayout gl = new GlyphLayout(font, text);
 			font.draw(batch, text, Gdx.graphics.getWidth()/2-gl.width/2, Gdx.graphics.getHeight()-200);
 			batch.end();
@@ -168,8 +160,6 @@ public class LD39 extends ApplicationAdapter implements InputProcessor {
 
 		batch.setProjectionMatrix(cam.combined);
 		batch.begin();
-
-		//batch.draw(background, 0, 0, 0, 0, MAP_W, Gdx.graphics.getHeight());
 
 		for(int i=0; i<platforms.size(); i++) {
 			platforms.get(i).render(batch);
@@ -211,22 +201,6 @@ public class LD39 extends ApplicationAdapter implements InputProcessor {
 		for(int i=0; i<actionMessages.size(); i++) {
 			actionMessages.get(i).render(batch, this);
 		}
-
-//		batch.end();
-//
-//		sr.begin(ShapeRenderer.ShapeType.Line);
-//		sr.setColor(Color.WHITE);
-//		sr.arc(getMe().x, getMe().y+100, 30, -180, 180);
-//		sr.end();
-//
-//		batch.begin();
-
-		batch.setProjectionMatrix(resetBatch());
-
-//		if(getMe()!=null && getMe().dead) {
-//			font.setColor(Color.BLACK);
-//			font.draw(batch, "Respawnining in " + (3-(int) tmrRespawn), Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
-//		}
 
 		batch.end();
 
@@ -281,8 +255,6 @@ public class LD39 extends ApplicationAdapter implements InputProcessor {
 			if(message.equals(am.text)) return;
 		}
 
-		//playSound("select");
-
 		int size = 24;
 		if(actionMessages.size()>=1) {
 			actionMessages.add(new ActionMessage(message, size, colour));
@@ -304,7 +276,7 @@ public class LD39 extends ApplicationAdapter implements InputProcessor {
 		return poly;
 	}
 
-	public void renderHitbox(float[] verts, Color color) {
+	public void renderHitBox(float[] verts, Color color) {
 		batch.end();
 
 		sr.begin(ShapeRenderer.ShapeType.Line);
@@ -358,7 +330,7 @@ public class LD39 extends ApplicationAdapter implements InputProcessor {
 	@Override
 	public boolean keyDown(int keycode) {
 		if(keycode==Input.Keys.B) {
-			showHitboxes = !showHitboxes;
+			showHitBoxes = !showHitBoxes;
 		}
 
 		if(keycode==Input.Keys.SPACE) {

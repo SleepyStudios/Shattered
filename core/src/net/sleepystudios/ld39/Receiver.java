@@ -21,9 +21,10 @@ public class Receiver extends Listener {
 
     @Override
     public void disconnected(Connection c) {
+        super.disconnected(c);
+
         game.me = -1;
         game.players.clear();
-        super.disconnected(c);
     }
 
     @Override

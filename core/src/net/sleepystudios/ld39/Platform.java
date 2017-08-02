@@ -50,8 +50,8 @@ public class Platform {
 
         sprite.draw(batch);
 
-        if(game.showHitboxes) {
-            game.renderHitbox(boxToPoly().getTransformedVertices(), Color.BLACK);
+        if(game.showHitBoxes) {
+            game.renderHitBox(boxToPoly().getTransformedVertices(), Color.BLACK);
         }
     }
 
